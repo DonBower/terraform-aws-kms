@@ -24,15 +24,28 @@ locals {
       ],
       var.keyCustomerSpec
     ) ? var.keyCustomerSpec : "SYMMETRIC_DEFAULT"
+    keyPolicyId               = local.thisPolicyId
+    keyPolicies               = merge(local.enabledPolicies,local.requiredPolicies)
+    # keyMultiRegion is false, because we only use us-east-1 here at ag6hq.net
     keyMultiRegion            = false
     # keyCustomStoreID is not used at this time.
     # (Optional) ID of the KMS Custom Key Store where the key will be stored instead of KMS (eg CloudHSM).
     keyCustomStoreID          = null
+    # keyDeletionWindow is not used, since we cannot specify 0
     keyDeletionWindow         = null
+    # keyLockoutSafterCheck is defaulted to false per documentation.  Dangrous to use as true.
+    keyLockoutSafetyCheck     = false
+    # keyIsEnabled - why else have a key?
+    keyIsEnabled              = true
+    # keyRotationIsEnabled Requires coding a lamda function to auto rotate.  maybe a future release.
+    keyRotationIsEnabled      = false
   }
 
-  thisPolicyId                = "key-consolepolicy-3"
-  thesePolicies               = {
+
+  thisPolicyId                = "terraform-aws-kms-policies"
+  # we will develop this in the future.
+  enabledPolicies             = {}
+  requiredPolicies            = {
     "Enable IAM User Permissions" = {
       Effect                  = "Allow"
       Actions                 = ["kms:*"]
