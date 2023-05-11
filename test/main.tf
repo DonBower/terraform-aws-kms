@@ -1,7 +1,7 @@
 module kms {
   source                                = "../"
   keyAlias                              = "terraform-aws-kms"
-  keyDescription                        = "KMS Key for encrypting Marnegro Data on S3"
+  keyDescription                        = "KMS Key for testing module terraform-aws-kms"
   
   theseTags                             = tomap(
     {
